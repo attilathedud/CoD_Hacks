@@ -22,29 +22,29 @@ includelib \masm32\lib\kernel32.lib
 	main:
 		; Save the current state of the stack.
 		push ebp
-	    mov ebp,esp
+		mov ebp,esp
 
 		; Ensure our dll was loaded validily.
-	    mov eax,dword ptr ss:[ebp+0ch]
-	    cmp eax,1
-	    jnz @returnf
+		mov eax,dword ptr ss:[ebp+0ch]
+		cmp eax,1
+		jnz @returnf
 
 		; Allocate memory for the old protection type.
 		; Store this location in ebx.
 		push eax
-        push 40h
-        push 1000h
-        push 4h
-        push 0
-        call VirtualAlloc 
-        mov ebx,eax
+		push 40h
+		push 1000h
+		push 4h
+		push 0
+		call VirtualAlloc 
+		mov ebx,eax
 
 		; Unprotect the memory at 518d5ch-518d6ch
-        push ebx
-        push 40h
-        push 10h
-        push 518d5ch
-        call VirtualProtect
+		push ebx
+		push 40h
+		push 10h
+		push 518d5ch
+		call VirtualProtect
 
 		; Create a codecave in the draw_elements routine that will call to our hook function.
 		; e8h is the opcode to call, with the address of the jump being calculated by subtracting
@@ -64,16 +64,16 @@ includelib \masm32\lib\kernel32.lib
 
 		; Reprotect the memory we just wrote.
 		push 0
-	    push dword ptr ds:[ebx]
-	    push 10h
-	    push 518d5ch
-	    call VirtualProtect 
+		push dword ptr ds:[ebx]
+		push 10h
+		push 518d5ch
+		call VirtualProtect 
 
 		; Free the memory we allocated for our protection type.
-	    push 4000h
-	    push 4h
-	    push ebx
-	    call VirtualFree 
+		push 4000h
+		push 4h
+		push ebx
+		call VirtualFree 
 
 		; Restore eax and the stack
 		pop eax
