@@ -32,42 +32,42 @@ includelib \masm32\lib\kernel32.lib
 		; Store this location in ebx.
 		push eax
 		push 40h
-        push 1000h
-        push 4h
-        push 0
-        call VirtualAlloc 
-        mov ebx,eax
+		push 1000h
+		push 4h
+		push 0
+		call VirtualAlloc 
+		mov ebx,eax
 
-        ; Unprotect the memory at 4654c0h-4654c5h
-        push ebx
-        push 40h
-        push 5h
-        push 4654c0h
-        call VirtualProtect
+		; Unprotect the memory at 4654c0h-4654c5h
+		push ebx
+		push 40h
+		push 5h
+		push 4654c0h
+		call VirtualProtect
 
 		; Create a codecave in the syscall routine that will jump to our hook function.
 		; e9h is the opcode to jump, with the address of the jump being calculated by subtracting
 		; the address of the function to jump to from our current location.
-        mov byte ptr ds:[4654c0h],0e9h
-        lea ecx,@cg_syscall
-        sub ecx,4654c5h
-        mov dword ptr ds:[4654c1h],ecx
+		mov byte ptr ds:[4654c0h],0e9h
+		lea ecx,@cg_syscall
+		sub ecx,4654c5h
+		mov dword ptr ds:[4654c1h],ecx
 
 		; Since our patched instruction is 6 bytes, nop out the remaining byte.
-        mov byte ptr ds:[4654c5h],90h
+		mov byte ptr ds:[4654c5h],90h
 
 		; Reprotect the memory we just wrote.
 		push 0
-	    push dword ptr ds:[ebx]
-	    push 5h
-	    push 4654c0h
-	    call VirtualProtect 
+		push dword ptr ds:[ebx]
+		push 5h
+		push 4654c0h
+		call VirtualProtect 
 
 		; Free the memory we allocated for our protection type.
-	    push 4000h
-	    push 4h
-	    push ebx
-	    call VirtualFree 
+		push 4000h
+		push 4h
+		push ebx
+		call VirtualFree 
 
 		; Restore eax and the stack
 		pop eax
