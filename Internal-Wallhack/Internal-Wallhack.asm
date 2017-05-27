@@ -69,7 +69,7 @@ includelib \masm32\lib\kernel32.lib
 		push ebx
 		call VirtualFree 
 
-		; Restore eax and the stack
+		; Restore eax and the stack.
 		pop eax
 		@returnf:
 			leave
