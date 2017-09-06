@@ -39,7 +39,10 @@ An internal wallhack that hooks CoD's syscall function and adjusts the render fl
 ## No-Recoil
 A no-recoil hack for CoD single-player that works by removing the instructions for aim being punched up while shooting.
 
-## OpenGl-Wallhack
+## OpenGL-CountMonitor
+A utility to log the counts of displayed entities to help isolate specific counts of player models.
+
+## OpenGL-Wallhack
 A wallhack that uses the glTexCoordPointer method to achieve great results without logging counts.
 
 Undetected by PB from 2007/12/23 to ~2008/02.
